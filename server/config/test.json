@@ -1,0 +1,5 @@
+{
+    "Level" : "test",
+    "PORT" : 3000,
+    "MONGOURL": "mongodb://localhost:27017/PA_DB_TEST"
+}

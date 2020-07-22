@@ -1,0 +1,13 @@
+{
+    "name": "pa-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server/servers.js",
+    "scripts": {
+        "test": "export NODE_ENV=test || SET NODE_ENV=test && nodemon --exec 'npm start'",
+        "start": "node server/server.js"
+    },
+    "dependencies": {
+        "config": "^3.3.1"
+    }
+}
