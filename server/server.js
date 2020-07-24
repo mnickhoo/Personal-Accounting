@@ -28,7 +28,24 @@ app.post('/api/users' , (req,res)=>{
             "error" : "somthing went wrong!"
         })
     })
-})
+});
+
+app.post('/api/login' , (req,res)=>{
+    const body = _.pick(req.body , ['fullname' , 'email' , 'password']);
+    user.findbyCredentials(body.email , body.password).then((userOne)=>{
+        userOne.generateAuthToken().then(token =>{
+            res.header('x-auth' , token).status(200).send(token);
+        } , err =>{
+            res.status(400).json({
+                "error" : `somthing went wrong. ${err}`
+            })
+        })
+    })
+});
+
+
+
+
 
 app.get('/api/version', (req,res)=>{
     console.log("ok!")

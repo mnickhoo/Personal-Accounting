@@ -1,5 +1,6 @@
 {
     "Level" : "development",
     "PORT" : 3000,
-    "MONGOURL": "mongodb://localhost:27017/PA_DB"
+    "MONGOURL": "mongodb://localhost:27017/PA_DB",
+    "JWT_SECRET" : "kidoCode"
 }
