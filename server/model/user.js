@@ -79,6 +79,22 @@ userSchema.pre('save' , function(next){
     }
 });
 
+userSchema.statics.findByToken = function(token){
+    let user = this ; 
+    let decode ; 
+    try {
+        decode = jwt.verify(toekn , config.get('JWT_SECRET'));
+    } catch (error) {
+        return Promise.reject();
+    }
+
+    return user.findOne({
+        _id : decode._id,
+        'tokens.token' : token,
+        'tokens.access' : 'auth'
+    })
+};
+
 
 userSchema.methods.generateAuthToken = function () {
     let user = this;
