@@ -34,8 +34,23 @@ let userSchema = new mongoose.Schema({
         require : true
     },
     tokens : [{
+        _id : false,
         access : tokenOptions,
         token :tokenOptions 
+    }] , 
+    payment : [{
+        info:{
+            type : String , 
+            require : true
+        },
+        amount : {
+            type : Number , 
+            require : true
+        },
+        date : {
+            type : String , 
+            require : true
+        }
     }]
 });
 
