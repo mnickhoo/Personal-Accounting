@@ -48,9 +48,9 @@ userSchema.statics.findbyCredentials = function(email , password){
             return Promise.reject();
         }
         return new Promise((resolve , reject)=>{
-            bcrypt.compare(password , user.password , (err , res)=>{
-                if(res){
-                    resolve(res);
+            bcrypt.compare(password , user.password , (err , success)=>{
+                if(success){
+                    resolve(user);
                 }else{
                     reject();
                 }
@@ -79,21 +79,24 @@ userSchema.pre('save' , function(next){
     }
 });
 
-userSchema.methods.generateAuthToken = function(){
-    let user = this; 
-    let access = 'auth' ; 
+
+userSchema.methods.generateAuthToken = function () {
+    let user = this;
+    let access = 'auth';
+
     let token = jwt.sign({
-    _id : user._id.toHexString(),
-    access 
-    }, config.get('JWT_SECRET').toString())
+        _id: user._id.toHexString(),
+        access
+    }, config.get('JWT_SECRET')).toString();
 
     user.tokens.push({
-        access , 
+        access,
         token
-    })
-    return user.save().then(()=>{
-        return token ;
-    })
+    });
+
+    return user.save().then(() => {
+        return token;
+    });
 }
 
 //define user model

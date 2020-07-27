@@ -30,16 +30,17 @@ app.post('/api/users' , (req,res)=>{
     })
 });
 
+//login Section API
 app.post('/api/login' , (req,res)=>{
     const body = _.pick(req.body , ['fullname' , 'email' , 'password']);
-    user.findbyCredentials(body.email , body.password).then((userOne)=>{
-        userOne.generateAuthToken().then(token =>{
-            res.header('x-auth' , token).status(200).send(token);
-        } , err =>{
+    user.findbyCredentials(body.email , body.password).then((user)=>{
+        user.generateAuthToken().then((token) => {
+            res.header('x-auth', token).status(200).send(token);
+        }, (err) => {
             res.status(400).json({
-                "error" : `somthing went wrong. ${err}`
-            })
-        })
+                Error: `Something went wrong. ${err}`
+            });
+        });
     })
 });
 
