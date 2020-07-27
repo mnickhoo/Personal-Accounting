@@ -16,36 +16,35 @@ const app = express();
 app.use(express.json());
 
 //request on address /api/users
-app.post('/api/users' , (req,res)=>{
-    const body = _.pick(req.body , ['fullname','email','password']);
-    console.log(body);
-    let newUser = user(body);
-    newUser.save().then(user =>{
-        res.status(200).send(user);
-        res.body
-    } , err =>{
+app.post('/api/users' , async (req,res)=>{
+    try {
+        const body = _.pick(req.body , ['fullname','email','password']);
+        let newUser = user(body);
+        await newUser.save();
+        res.status(200).send(newUser);
+    } catch (err) {
         res.status(400).json({
-            "error" : "somthing went wrong!"
+            "error" : `somthing went wrong! ${err}`
         })
-    })
+    }
 });
 
 //login Section API
-app.post('/api/login' , (req,res)=>{
+app.post('/api/login' , async (req,res)=>{
+    try{
     const body = _.pick(req.body , ['fullname' , 'email' , 'password']);
-    user.findbyCredentials(body.email , body.password).then((user)=>{
-        user.generateAuthToken().then((token) => {
-            res.header('x-auth', token).status(200).send(token);
-        }, (err) => {
-            res.status(400).json({
-                Error: `Something went wrong. ${err}`
-            });
+
+    let uerResult = await user.findbyCredentials(body.email , body.password);
+    let token = await uerResult.generateAuthToken();
+    res.header('x-auth', token)
+                .status(200)
+                .send(token);
+    }catch(err){
+        res.status(400).json({
+           Error: `Something went wrong. ${err}`
         });
-    })
+    }
 });
-
-
-
 
 
 app.get('/api/version', (req,res)=>{
